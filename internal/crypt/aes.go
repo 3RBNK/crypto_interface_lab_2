@@ -3,12 +3,12 @@ package crypt
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"filecrypt/internal/app"
+	"filecrypt/internal/format"
 	"fmt"
 )
 
 func encryptCFB(plaintext, key, iv []byte) ([]byte, error) {
-	if len(key) != app.KeySize {
+	if len(key) != format.KeySize {
 		return nil, fmt.Errorf("invalid AES-256 key size: expected 32 bytes, got %d", len(key))
 	}
 	if len(iv) != aes.BlockSize {

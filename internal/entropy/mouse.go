@@ -4,7 +4,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/binary"
-	"filecrypt/internal/app"
+	"filecrypt/internal/format"
 	"fmt"
 	"time"
 
@@ -20,7 +20,7 @@ const (
 func generateSalt() ([]byte, error) {
 	hash := sha256.New()
 
-	random := make([]byte, app.SaltSize)
+	random := make([]byte, format.SaltSize)
 	if _, err := rand.Read(random); err != nil {
 		return nil, err
 	}

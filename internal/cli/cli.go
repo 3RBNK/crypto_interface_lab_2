@@ -49,7 +49,7 @@ func readTermParams(args []string) (InputContext, error) {
 	flags := flag.NewFlagSet(args[0], flag.ContinueOnError)
 
 	flags.StringVar(&ctx.inputFilePath, "in", "", "input file path")
-	flags.StringVar(&ctx.inputFilePath, "out", "", "output file path")
+	flags.StringVar(&ctx.outputFilePath, "out", "", "output file path")
 
 	flags.BoolVar(&ctx.noVerify, "no-verify", false, "disable verification")
 
