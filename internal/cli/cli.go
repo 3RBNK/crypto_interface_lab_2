@@ -49,6 +49,7 @@ func readTermParams(args []string) (InputContext, error) {
 	flags := flag.NewFlagSet(args[0], flag.ContinueOnError)
 
 	flags.StringVar(&ctx.inputFilePath, "in", "", "input file path")
+	flags.StringVar(&ctx.inputFilePath, "out", "", "output file path")
 
 	flags.BoolVar(&ctx.noVerify, "no-verify", false, "disable verification")
 
@@ -80,7 +81,7 @@ func Run(args []string) error {
 	fmt.Printf("mode: %s\n", ctx.cryptoMode)
 	fmt.Printf("input: %s\n", ctx.inputFilePath)
 	fmt.Printf("output: %s\n", ctx.outputFilePath)
-	fmt.Printf("no verify: %s\n", ctx.noVerify)
+	fmt.Printf("no verify: %t\n", ctx.noVerify)
 
 	return nil
 }

@@ -3,46 +3,46 @@ package crypt
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/rand"
-	"errors"
-	"io"
+	"filecrypt/internal/app"
+	"fmt"
 )
 
-func encrypt(plaintext, key, iv []byte) ([]byte, error) {
+func encryptCFB(plaintext, key, iv []byte) ([]byte, error) {
+	if len(key) != app.KeySize {
+		return nil, fmt.Errorf("invalid AES-256 key size: expected 32 bytes, got %d", len(key))
+	}
+	if len(iv) != aes.BlockSize {
+		return nil, fmt.Errorf("invalid IV size: expected %d bytes, got %d", aes.BlockSize, len(iv))
+	}
+
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("create AES cipher: %w", err)
 	}
 
-	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
-	iv = ciphertext[:aes.BlockSize]
-
-	_, err = io.ReadFull(rand.Reader, iv)
-	if err != nil {
-		return nil, err
-	}
-
+	ciphertext := make([]byte, len(plaintext))
 	stream := cipher.NewCFBEncrypter(block, iv)
-	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
+	stream.XORKeyStream(ciphertext, plaintext)
 
 	return ciphertext, nil
 }
 
-func decrypt(ciphertext, key, iv []byte) ([]byte, error) {
+func decryptCFB(ciphertext, key, iv []byte) ([]byte, error) {
+	if len(key) != 32 {
+		return nil, fmt.Errorf("invalid AES-256 key size: expected 32 bytes, got %d", len(key))
+	}
+	if len(iv) != aes.BlockSize {
+		return nil, fmt.Errorf("invalid IV size: expected %d bytes, got %d", aes.BlockSize, len(iv))
+	}
+
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("create AES cipher: %w", err)
 	}
 
-	if len(ciphertext) < aes.BlockSize {
-		return nil, errors.New("ciphertext too short")
-	}
-
-	iv = ciphertext[:aes.BlockSize]
-	ciphertext = ciphertext[aes.BlockSize:]
-
+	plaintext := make([]byte, len(ciphertext))
 	stream := cipher.NewCFBDecrypter(block, iv)
-	stream.XORKeyStream(ciphertext, ciphertext)
+	stream.XORKeyStream(plaintext, ciphertext)
 
-	return ciphertext, nil
+	return plaintext, nil
 }

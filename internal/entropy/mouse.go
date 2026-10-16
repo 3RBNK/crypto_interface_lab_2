@@ -3,6 +3,7 @@ package entropy
 import (
 	"crypto/rand"
 	"crypto/sha256"
+	"encoding/binary"
 	"filecrypt/internal/app"
 	"fmt"
 	"time"
@@ -45,6 +46,17 @@ func generateSalt() ([]byte, error) {
 		}
 
 		globalX, globalY = x, y
+
+		var sample [24]byte
+
+		binary.LittleEndian.PutUint64(sample[0:8], uint64(int64(x)))
+		binary.LittleEndian.PutUint64(sample[8:16], uint64(int64(y)))
+		binary.LittleEndian.PutUint64(
+			sample[16:24],
+			uint64(time.Now().UnixNano()),
+		)
+
+		hash.Write(sample[:])
 
 		count++
 
