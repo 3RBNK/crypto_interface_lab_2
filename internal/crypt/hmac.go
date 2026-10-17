@@ -5,14 +5,14 @@ import (
 	"crypto/sha256"
 )
 
-func generateHMAC(data, key []byte) []byte {
-	hmac := hmac.New(sha256.New, key)
-	hmac.Write(data)
+func GenerateHMAC(data, key []byte) []byte {
+	hash := hmac.New(sha256.New, key)
+	hash.Write(data)
 
-	return hmac.Sum(nil)
+	return hash.Sum(nil)
 }
 
-func verifyHMAC(data, key, excepted []byte) bool {
-	actualMAC := generateHMAC(data, key)
+func VerifyHMAC(data, key, excepted []byte) bool {
+	actualMAC := GenerateHMAC(data, key)
 	return hmac.Equal(actualMAC, excepted)
 }

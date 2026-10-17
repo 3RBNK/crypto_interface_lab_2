@@ -17,7 +17,7 @@ const (
 	timeout     = 30 * time.Second
 )
 
-func generateSalt() ([]byte, error) {
+func GenerateSalt() ([]byte, error) {
 	hash := sha256.New()
 
 	random := make([]byte, format.SaltSize)

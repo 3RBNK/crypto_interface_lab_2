@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func encryptCFB(plaintext, key, iv []byte) ([]byte, error) {
+func EncryptCFB(plaintext, key, iv []byte) ([]byte, error) {
 	if len(key) != format.KeySize {
 		return nil, fmt.Errorf("invalid AES-256 key size: expected 32 bytes, got %d", len(key))
 	}
@@ -27,7 +27,7 @@ func encryptCFB(plaintext, key, iv []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-func decryptCFB(ciphertext, key, iv []byte) ([]byte, error) {
+func DecryptCFB(ciphertext, key, iv []byte) ([]byte, error) {
 	if len(key) != 32 {
 		return nil, fmt.Errorf("invalid AES-256 key size: expected 32 bytes, got %d", len(key))
 	}

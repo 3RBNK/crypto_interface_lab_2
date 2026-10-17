@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func deriveKey(password string, salt []byte) (encryptionKey, macKey []byte, err error) {
+func DeriveKey(password string, salt []byte) (encryptionKey, macKey []byte, err error) {
 	if len(salt) != format.SaltSize {
 		return nil, nil, fmt.Errorf("salt size is invalid: %d", len(salt))
 	}

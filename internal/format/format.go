@@ -7,10 +7,11 @@ const (
 	HMACSize   = 32
 	IVSize     = 16
 	KeySize    = 32
+	Iterations = 600_000
 	HeaderSize = SaltSize + HMACSize + IVSize
 )
 
-func pack(salt, mac, iv, ciphertext []byte) ([]byte, error) {
+func Pack(salt, mac, iv, ciphertext []byte) ([]byte, error) {
 	if len(salt) != SaltSize {
 		return nil, fmt.Errorf("invalid salt size: %d", len(salt))
 	}
@@ -33,10 +34,7 @@ func pack(salt, mac, iv, ciphertext []byte) ([]byte, error) {
 	return data, nil
 }
 
-func unpack(data []byte) (
-	salt, mac, iv, ciphertext []byte,
-	err error,
-) {
+func Unpack(data []byte) (salt, mac, iv, ciphertext []byte, err error) {
 	if len(data) < HeaderSize {
 		err = fmt.Errorf("encrypted file is too short")
 		return
