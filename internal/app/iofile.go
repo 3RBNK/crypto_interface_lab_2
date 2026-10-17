@@ -1,7 +1,7 @@
 package app
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 )
 
@@ -13,7 +13,7 @@ func readBinFile(path string) ([]byte, error) {
 
 	defer f.Close()
 
-	return ioutil.ReadAll(f)
+	return io.ReadAll(f)
 }
 
 func writeBinFile(path string, data []byte) error {

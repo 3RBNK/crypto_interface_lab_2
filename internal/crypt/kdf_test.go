@@ -9,12 +9,12 @@ func TestDeriveKeys(t *testing.T) {
 	password := "my-secret-password"
 	salt := bytes.Repeat([]byte{0x42}, 32)
 
-	encKey1, macKey1, err := deriveKey(password, salt)
+	encKey1, macKey1, err := DeriveKey(password, salt)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	encKey2, macKey2, err := deriveKey(password, salt)
+	encKey2, macKey2, err := DeriveKey(password, salt)
 	if err != nil {
 		t.Fatal(err)
 	}
